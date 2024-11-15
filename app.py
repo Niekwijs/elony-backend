@@ -5,10 +5,14 @@ from flask import Flask, jsonify
 from json import loads
 
 # our files/ imports
-from beursdata_tabel import create_tabel
+import beursdata_tabel
 from data_loader import Loader
 from tweet_details import get_tweet_details
 
+#DBD-006
+from tweets import init_twitter_route
+
+init_twitter_route(app)
 
 app = Flask(__name__)
 CORS(app)
@@ -35,5 +39,6 @@ def get_tesla_bearsdata_date_range(start_date, end_date):
 @app.route('/tweet/<tweet_id>', methods=['GET'])
 def tweet_details(tweet_id):
     tweet_data = get_tweet_details(tweet_id)
-    
+
     return jsonify(tweet_data)
+
