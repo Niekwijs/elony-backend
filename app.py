@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 from json import loads
 
 # our files/ imports
-from beursdata_tabel import create_tabel
+import beursdata_tabel
 from data_loader import Loader
 from tweet_details import get_tweet_details
 
