@@ -1,5 +1,4 @@
 import pandas as pd
-from datetime import datetime
 import os
 
 
@@ -27,14 +26,17 @@ class Loader:
         df_tesla_stock = self.datasets["TSLA ticker 2015 through 2020"]
         df_res = None
         try:
-            start_date = datetime.fromisoformat(start_date)
-            end_date = datetime.fromisoformat(end_date)
+            start_date = pd.to_datetime(start_date).tz_localize('UTC')
+            end_date = pd.to_datetime(end_date).tz_localize('UTC')
+
         except Exception as e:
             print(f'String could not be parsed to datetime:{e}')
             return None
         
         try:
             df_tesla_stock["Date"] = pd.to_datetime(df_tesla_stock["Date"])
+            if len(df_tesla_stock) <= 1 :
+                print(f"no resuts from date range with { len(df_tesla_stock)}")
         except Exception as e:
             print(f'Parsing Date column went wrong:{e}')
             return None
@@ -47,6 +49,8 @@ class Loader:
         
         return df_res
         
+
+# this is purely for testing purposes
 if __name__ == "__main__":
     loader = Loader()
 
@@ -55,5 +59,3 @@ if __name__ == "__main__":
         print(f"Dataset: {key}, Shape: {df.shape}")
     
     df_res = loader.get_tesla_stock_range('2015-01-06 00:00:00+00:00', '2015-04-16 00:00:00+00:00')
-    print(df_res.head())
-    print(df_res)

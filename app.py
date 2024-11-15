@@ -39,5 +39,6 @@ def get_tesla_bearsdata_date_range(start_date, end_date):
 @app.route('/tweet/<tweet_id>', methods=['GET'])
 def tweet_details(tweet_id):
     tweet_data = get_tweet_details(tweet_id)
-    
+
     return jsonify(tweet_data)
+
