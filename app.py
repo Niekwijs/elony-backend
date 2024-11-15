@@ -8,6 +8,7 @@ from json import loads
 import beursdata_tabel
 from data_loader import Loader
 from tweet_details import get_tweet_details
+from beursdata_lijngrafiek import create_grafiek
 
 #DBD-006
 from tweets import init_twitter_route
@@ -41,4 +42,9 @@ def tweet_details(tweet_id):
     tweet_data = get_tweet_details(tweet_id)
 
     return jsonify(tweet_data)
+
+@app.route("/lijngrafiek_beursdata")
+def tesla_beursdata_lijngrafiek():
+    parsed_beursdata_tesla = create_grafiek()
+    return jsonify({"parsed": parsed_beursdata_tesla})
 
