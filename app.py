@@ -1,14 +1,14 @@
 # other files/ imports
 from flask import Flask
 from flask_cors import CORS
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_file
 from json import loads
 
 # our files/ imports
 import beursdata_tabel
 from data_loader import Loader
 from tweet_details import get_tweet_details
-from beursdata_lijngrafiek import create_grafiek
+from beursdata_lijngrafiek import create_grafiek_matplotlib
 
 #DBD-006
 from tweets import init_twitter_route
@@ -43,8 +43,12 @@ def tweet_details(tweet_id):
 
     return jsonify(tweet_data)
 
-@app.route("/lijngrafiek_beursdata")
-def tesla_beursdata_lijngrafiek():
-    parsed_beursdata_tesla = create_grafiek()
-    return jsonify({"parsed": parsed_beursdata_tesla})
+# @app.route("/lijngrafiek_beursdata")
+# def tesla_beursdata_lijngrafiek():
+#     parsed_beursdata_tesla = create_grafiek()
+#     return jsonify({"parsed": parsed_beursdata_tesla})
 
+@app.route("/lijngrafiek_beursdata_matplotlib", methods=["GET"])
+def tesla_beursdata_lijngrafiek_matplotlib():
+    img_buffer = create_grafiek_matplotlib()
+    return send_file(img_buffer, mimetype='image/png')
