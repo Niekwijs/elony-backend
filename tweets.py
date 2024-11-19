@@ -1,5 +1,6 @@
 import pandas as pd
 from json import loads, dumps
+from flask import jsonify
 
 def init_twitter_route(app):
     @app.route("/ELONTWITTERANALYSE", methods = ['GET'])
