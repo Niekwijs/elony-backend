@@ -1,7 +1,6 @@
 # other files/ imports
-from flask import Flask
 from flask_cors import CORS
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from json import loads
 
 # our files/ imports
@@ -35,8 +34,18 @@ def get_all_tsla():
     res = tsla_repo.get_all()
 
     return jsonify({"res": res})
-     
 
+@app.route("/tsla/get_by_date_range")
+def get_tsla_by_date_range():
+    start_date = request.args["start_date"]
+    end_date = request.args["end_date"]
+    print(start_date)
+    print(end_date)
+
+    res = tsla_repo.get_by_date_range(start_date, end_date)
+    print(res)
+    return jsonify({"res": res})
+     
 
 @app.route("/tabel_tesla_beursdata/<start_date>/<end_date>", methods=["get"])
 def get_tesla_bearsdata_date_range(start_date, end_date):
