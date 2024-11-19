@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from json import loads, dumps
 from flask import jsonify
@@ -7,7 +8,7 @@ def init_twitter_route(app):
     def get_tweets():
         try:
             #CSV-bestand inladen
-            tweets = pd.read_csv(".data/TweetsElonMusk.csv")
+            tweets = pd.read_csv("./data/TweetsElonMusk.csv")
             #Alleen relevante kolommen selecteren
             relevant_data = tweets[["date", "time", "tweet"]]
             #Converteer naar JSON
