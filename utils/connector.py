@@ -1,5 +1,5 @@
 import pyodbc
-from typing import type
+from typing import Type
 
 class DbConnector:
     
@@ -7,8 +7,6 @@ class DbConnector:
 
     def __init__(self):
         self.connect()
-
-
 
     def connect(self)-> None :
         if self.connection and not self.connection.closed:
@@ -18,7 +16,7 @@ class DbConnector:
         connection_string = (
         "DRIVER={SQL Server};"        # Driver
         "SERVER=datadbserverdamen.database.windows.net;"         # Naam of IP van de server
-        "DATABASE=sebasindebocht;"     # Naam van de database
+        "DATABASE=staging_elony;"     # Naam van de database
         "UID=admindamen;"               # Gebruikersnaam
         "PWD=uiop7890UIOP&*();"               # Wachtwoord
         )

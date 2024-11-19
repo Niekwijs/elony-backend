@@ -9,8 +9,8 @@ import beursdata_tabel
 from data_loader import Loader
 from tweet_details import get_tweet_details
 from beursdata_lijngrafiek import create_grafiek
-
-#DBD-006
+from utils.connector import DbConnector
+from repositories.tsla_repo import TslaRepo
 from tweets import init_twitter_route
 
 
@@ -18,6 +18,10 @@ app = Flask(__name__)
 CORS(app)
 csv_loader = Loader()
 init_twitter_route(app)
+db_con: DbConnector = DbConnector()
+
+# repositories
+tsla_repo: TslaRepo = TslaRepo(db_con)
 
 
 @app.route("/tabel_tesla_beursdata")
@@ -25,6 +29,13 @@ def tesla_tabel():
     parsed_beursdata_tesla = beursdata_tabel.create_tabel()
     
     return jsonify({"parsed": parsed_beursdata_tesla})
+
+@app.route("/tsla/get_all")
+def get_all_tsla():
+    res = tsla_repo.get_all()
+
+    return jsonify({"res": res})
+     
 
 
 @app.route("/tabel_tesla_beursdata/<start_date>/<end_date>", methods=["get"])
