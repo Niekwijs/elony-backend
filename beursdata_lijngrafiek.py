@@ -1,8 +1,9 @@
 import pandas as pd 
 import matplotlib.pyplot as plt
 from json import loads, dumps
+from io import BytesIO
 
-def create_grafiek():
+def create_grafiek_matplotlib():
     # Inladen van de data (csv-file)
     file_path = "TSLA_ticker_2015_through_2020.csv"
     df_tsla_beursdata = pd.read_csv(file_path)
@@ -29,7 +30,7 @@ def create_grafiek():
     parsed_beursdata = loads(result_tsla_beursdata)
 
     # Plotten van de grafiek met matplotlib
-    plt.figure(figsize=(10,6))  # Grootte van de grafiek aanpassen
+    plt.figure(figsize=(15,6))  # Grootte van de grafiek aanpassen
     plt.plot(df_monthly_mean['Date'], df_monthly_mean['TSLA'], marker='o', color='b', linestyle='-', linewidth=2)
 
     # Titel en labels toevoegen
@@ -45,13 +46,16 @@ def create_grafiek():
     # plt.show() # Toon de plot
 
     # Sla de grafiek op als afbeelding in PNG formaat
-    plt.savefig('beursdata_lijngrafiek.png') 
+    # plt.savefig('beursdata_lijngrafiek.png') 
     # plt.close()  # Sluit de plot af
 
     # Toon een bericht om aan te geven dat de afbeelding is opgeslagen
-    print("De grafiek is opgeslagen als 'beursdata_lijngrafiek.png'.")
+    # print("De grafiek is opgeslagen als 'beursdata_lijngrafiek.png'.")
 
-    return parsed_beursdata
+    # Converteer grafiek naar een BytesIO-object
+    img_buffer = BytesIO()
+    plt.savefig(img_buffer, format='png')
+    img_buffer.seek(0)
+    plt.close()
 
-# Aanroepen van de functie om de grafiek te tonen
-create_grafiek()
+    return img_buffer
