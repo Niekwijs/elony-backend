@@ -1,14 +1,12 @@
 import pandas as pd
 import os
 
-
-
 class Loader:
     datasets = {}
 
-
     def __init__(self):
         self.load_all_in_data()
+
 
     def load_all_in_data(self):
         response = {}
@@ -21,6 +19,12 @@ class Loader:
                     df = pd.read_csv(file_path)
                     key = os.path.splitext(filename)[0]
                     self.datasets[key] = df
+
+    # Create tables in ODS database form flat files
+    def create_ods_tables():
+    
+        return
+    # function has to populate the ODS table with 
 
     def get_tesla_stock_range(self, start_date, end_date):
         df_tesla_stock = self.datasets["TSLA ticker 2015 through 2020"]
