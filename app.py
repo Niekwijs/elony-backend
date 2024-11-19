@@ -13,11 +13,11 @@ from beursdata_lijngrafiek import create_grafiek
 #DBD-006
 from tweets import init_twitter_route
 
-init_twitter_route(app)
 
 app = Flask(__name__)
 CORS(app)
 csv_loader = Loader()
+init_twitter_route(app)
 
 
 @app.route("/tabel_tesla_beursdata")
@@ -47,4 +47,3 @@ def tweet_details(tweet_id):
 def tesla_beursdata_lijngrafiek():
     parsed_beursdata_tesla = create_grafiek()
     return jsonify({"parsed": parsed_beursdata_tesla})
-
