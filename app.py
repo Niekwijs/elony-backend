@@ -1,17 +1,19 @@
 # other files/ imports
 from flask_cors import CORS
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
+
 from json import loads
 
 # our files/ imports
 import beursdata_tabel
 from data_loader import Loader
 from tweet_details import get_tweet_details
+
 from beursdata_lijngrafiek import create_grafiek
 from utils.connector import DbConnector
 from repositories.tsla_repo import TslaRepo
 from tweets import init_twitter_route
-
+from beursdata_lijngrafiek import create_grafiek_matplotlib
 
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +23,8 @@ db_con: DbConnector = DbConnector()
 
 # repositories
 tsla_repo: TslaRepo = TslaRepo(db_con)
+
+init_twitter_route(app)
 
 
 @app.route("/tabel_tesla_beursdata")
@@ -63,7 +67,14 @@ def tweet_details(tweet_id):
 
     return jsonify(tweet_data)
 
-@app.route("/lijngrafiek_beursdata")
-def tesla_beursdata_lijngrafiek():
-    parsed_beursdata_tesla = create_grafiek()
-    return jsonify({"parsed": parsed_beursdata_tesla})
+
+
+# @app.route("/lijngrafiek_beursdata")
+# def tesla_beursdata_lijngrafiek():
+#     parsed_beursdata_tesla = create_grafiek()
+#     return jsonify({"parsed": parsed_beursdata_tesla})
+
+@app.route("/lijngrafiek_beursdata_matplotlib", methods=["GET"])
+def tesla_beursdata_lijngrafiek_matplotlib():
+    img_buffer = create_grafiek_matplotlib()
+    return send_file(img_buffer, mimetype='image/png')
