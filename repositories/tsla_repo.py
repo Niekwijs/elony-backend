@@ -22,8 +22,6 @@ class TslaRepo:
 
         try:
             with self.con.cursor() as cursor:
-            
-
                 cursor.execute("SELECT * FROM  dbo.tsla_ticker_2015_2020;")
 
                 rows : List[pyodbc.Row] = cursor.fetchall()
@@ -40,7 +38,6 @@ class TslaRepo:
                         "Date": iso_date,
                         "Tsla": tsla_value
                     })
-                    cursor.close()
         except Exception as e:
             print(f'Get all went kinda wrong: {e}')
             raise
