@@ -13,11 +13,11 @@ from beursdata_lijngrafiek import create_grafiek_matplotlib
 #DBD-006
 from tweets import init_twitter_route
 
-init_twitter_route(app)
-
 app = Flask(__name__)
 CORS(app)
 csv_loader = Loader()
+
+init_twitter_route(app)
 
 
 @app.route("/tabel_tesla_beursdata")
