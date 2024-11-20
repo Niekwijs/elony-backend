@@ -22,7 +22,11 @@ class TweetRepo:
             with self.con.cursor() as cursor:
                 cursor.execute("SELECT * FROM  dbo.tweet_elon_musk;")
 
-                rows : List[pyodbc.Row] = cursor.fetchall()
+                columns = [column[0] for column in cursor.description]
+                rows = cursor.fetchall()
+                
+                for row in rows:
+                    data.append(dict(zip(columns, row)))
                 
         except Exception as e:
             print(f'Get all went kinda wrong: {e}')
