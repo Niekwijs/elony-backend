@@ -5,16 +5,15 @@ from json import loads
 
 # our files/ imports
 import beursdata_tabel
-from data_loader import Loader
 from tweet_details import get_tweet_details
 from utils.connector import DbConnector
 from repositories.tsla_repo import TslaRepo
+from repositories.tweet_repo import TweetRepo
 from tweets import init_twitter_route
 from beursdata_lijngrafiek import create_grafiek_matplotlib
 
 app = Flask(__name__)
 CORS(app)
-csv_loader = Loader()
 init_twitter_route(app)
 
 # db connection
@@ -22,6 +21,7 @@ db_con: DbConnector = DbConnector()
 
 # repositories
 tsla_repo: TslaRepo = TslaRepo(db_con)
+tweet_repo: TweetRepo = TweetRepo(db_con)
 
 
 @app.route("/tabel_tesla_beursdata")
@@ -40,12 +40,26 @@ def get_all_tsla():
 def get_tsla_by_date_range():
     start_date = request.args["start_date"]
     end_date = request.args["end_date"]
-    print(start_date)
-    print(end_date)
 
     res = tsla_repo.get_by_date_range(start_date, end_date)
-    print(res)
+
     return jsonify({"res": res})
+
+@app.route('/tweet/get_by_id')
+def get_tweet_by_id():
+    tweet_id = request.args["tweet_id"]
+
+    res = tweet_repo.get_tweet_by_id(tweet_id)
+
+    return jsonify({'res': res})
+
+@app.route('/tweet/save_by_id')
+def save_by_id():
+    tweet_id = request.args["tweet_id"]
+
+    res = tweet_repo.save_tweet_by_id(tweet_id)
+
+    return jsonify({'res': res})
      
 
 @app.route('/tweet/<tweet_id>', methods=['GET'])
