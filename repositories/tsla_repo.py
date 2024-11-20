@@ -73,3 +73,30 @@ class TslaRepo:
             print(f"Get tsla by range went wrong: {e}")
             raise
         return data
+    
+    def get_beursdata_DBD001(self):
+        data = []
+        try:
+            with self.con.cursor() as cursor:
+
+                cursor.execute("""  SELECT *
+                                    FROM dbo.tsla_ticker_2015_2020
+                                    WHERE DATEPART(day, Date_typed) = 1;""")
+
+                rows : List[pyodbc.Row] = cursor.fetchall()
+
+                for row in rows:
+                        date_str = row[0]
+                        tsla_value = row[1]
+                        dt = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S%z")
+                        timestamp_ms = int(dt.timestamp() * 1000)
+
+                        data.append({
+                            "Date": timestamp_ms ,
+                            "Tsla": tsla_value
+                        })
+    
+        except Exception as e:
+            print(f"Get tsla by range went wrong: {e}")
+            raise
+        return data
