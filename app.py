@@ -53,7 +53,7 @@ def get_tweet_by_id():
 
     return jsonify({'res': res})
 
-@app.route('/tweet/save_by_id')
+@app.route('/tweet/save_by_id', methods=['POST'])
 def save_by_id():
     tweet_id = request.args["tweet_id"]
 
