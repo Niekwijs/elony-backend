@@ -26,7 +26,7 @@ tweet_repo: TweetRepo = TweetRepo(db_con)
 
 @app.route("/tabel_tesla_beursdata")
 def tesla_tabel():
-    parsed_beursdata_tesla = beursdata_tabel.create_tabel()
+    parsed_beursdata_tesla = tsla_repo.get_beursdata_DBD001()
     
     return jsonify({"parsed": parsed_beursdata_tesla})
 
