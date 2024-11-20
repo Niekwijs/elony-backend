@@ -60,7 +60,15 @@ def save_by_id():
     res = tweet_repo.save_tweet_by_id(tweet_id)
 
     return jsonify({'res': res})
-     
+
+@app.route('/tweet/check_if_saved')
+def check_if_saved():
+    tweet_id = request.args["tweet_id"]
+
+    res = tweet_repo.check_if_saved(tweet_id)
+
+    return jsonify({'res': res})
+
 
 @app.route('/tweet/<tweet_id>', methods=['GET'])
 def tweet_details(tweet_id):
