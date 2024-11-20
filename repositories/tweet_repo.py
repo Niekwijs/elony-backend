@@ -92,6 +92,29 @@ class TweetRepo:
                     res["message"] = f"Failed to save tweet with id {tweet_id}."
                     res["success"] = False
             return res
+        
+    def get_three_after_date(self, date):
+        data = []
 
-   
+        try:
+            with self.con.cursor() as cursor:
+                cursor.execute("""SELECT TOP 3 * 
+                                FROM dbo.tweet_elon_musk
+                                WHERE created_at >= ?
+                                ORDER BY created_at; """, (date))
 
+                columns = [column[0] for column in cursor.description]
+                rows = cursor.fetchall()
+
+                if len(rows) == 0:
+                    data.append( {"error" : "There are no tweets before or after this date"})
+                    return data
+                
+                for row in rows:
+                    data.append(dict(zip(columns, row)))
+
+                
+        except Exception as e:
+            print(f'Get all went kinda wrong: {e}')
+            raise
+        return data 

@@ -83,11 +83,16 @@ def tweet_details(tweet_id):
 
     return jsonify(tweet_data)
 
+@app.route('/tweet/get_three_after_date')
+def get_three_after_date():
+    date = request.args["date"]
 
-# @app.route("/lijngrafiek_beursdata")
-# def tesla_beursdata_lijngrafiek():
-#     parsed_beursdata_tesla = create_grafiek()
-#     return jsonify({"parsed": parsed_beursdata_tesla})
+    res = tweet_repo.get_three_after_date(date)
+
+    return jsonify({'res': res})
+        
+
+
 
 @app.route("/lijngrafiek_beursdata_matplotlib", methods=["GET"])
 def tesla_beursdata_lijngrafiek_matplotlib():
