@@ -52,6 +52,14 @@ def get_tweet_by_id():
     res = tweet_repo.get_tweet_by_id(tweet_id)
 
     return jsonify({'res': res})
+
+@app.route('/tweet/save_by_id')
+def save_by_id():
+    tweet_id = request.args["tweet_id"]
+
+    res = tweet_repo.save_tweet_by_id(tweet_id)
+
+    return jsonify({'res': res})
      
 
 @app.route('/tweet/<tweet_id>', methods=['GET'])

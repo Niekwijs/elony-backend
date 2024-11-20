@@ -41,10 +41,53 @@ class TweetRepo:
                 if row:
                     result = dict(zip(columns, row))
 
-
-                print(f'[+] for debugging purpose: {result}') 
-
         except Exception as e:
             print(f'get tweet by id = {id} went wrong!{e}')
             raise
         return result
+
+    def check_if_saved(self,  tweet_id: int)-> bool:
+        res: bool = False
+        try:
+            with self.con.cursor() as cursor:
+                cursor.execute("Select * FROM dbo.is_saved_tweet WHERE tweet_elon_musk_id = ?;",(tweet_id))
+
+                row: List[pyodbc.Row] = cursor.fetchall()
+
+                res = len(row)> 0
+
+        except Exception as e:
+            print(f'Check if tweet is saved went wrong with: {e}')
+            raise
+        return res
+    
+    def save_tweet_by_id(self, tweet_id: int): 
+        res= {}
+
+
+        # check if tweet id exists
+        if len(self.get_tweet_by_id(tweet_id)) == 0:
+            res["message"] = f'Tweet with id {tweet_id} does not exist in table dbo.tweet_elon_musk'
+            return res             
+
+        # check if not already saved
+        if self.check_if_saved(tweet_id):
+            res['message'] = f'tweet with id {tweet_id} is already saved!'
+            return res
+        
+        else:
+            try: 
+                with self.con.cursor() as cursor:
+                    cursor.execute("INSERT INTO dbo.is_saved_tweet (tweet_elon_musk_id) VALUES ((SELECT id FROM dbo.tweet_elon_musk WHERE id = ?));",(tweet_id)) 
+
+                    self.con.commit() 
+                    res["message"] = f"Tweet with id {tweet_id} has been successfully saved."
+                    res["success"] = True
+            except Exception as e:
+                    print(f'Something went wrong wen savind the tweet with {e}')
+                    res["message"] = f"Failed to save tweet with id {tweet_id}."
+                    res["success"] = False
+            return res
+
+   
+
