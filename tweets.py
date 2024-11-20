@@ -16,3 +16,17 @@ def init_twitter_route(app):
             return jsonify(tweets_json)
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+    @app.route("/ELONTWITTERDETAIL/<tweet_id>", methods=['GET'])
+    def get_tweet_details(tweet_id):
+        try:
+            # Zoek de specifieke tweet op basis van ID
+            tweet_details = tweets[tweets['id'] == int(tweet_id)].to_dict(orient="records")
+            
+            # Als geen tweet gevonden wordt
+            if not tweet_details:
+                return jsonify({"error": "Tweet not found"}), 404
+
+            # Retourneer alle velden van de gevonden tweet
+            return jsonify(tweet_details[0])  # Retourneer de eerste match als JSON
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
