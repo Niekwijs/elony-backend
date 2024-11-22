@@ -1,26 +1,24 @@
 import pyodbc
-from typing import Optional
+from typing import Type
 
 class DbConnector:
-
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._connect()
-        return cls._instance
+    
+    connection: pyodbc.Connection = None
 
     def __init__(self):
-        pass 
+        self.connect()
 
-    def _connect(self):
+    def connect(self)-> None :
+        if self.connection and not self.connection.closed:
+            print("Connection already active.")
+            return
+
         connection_string = (
-            "DRIVER={SQL Server};"  # Driver
-            "SERVER=datadbserverdamen.database.windows.net;"  # Server address
-            "DATABASE=staging_elony;"  # Database name
-            "UID=admindamen;"  # Username
-            "PWD=uiop7890UIOP&*();"  # Password (consider using environment variables or secure storage for credentials)
+        "DRIVER={SQL Server};"        # Driver
+        "SERVER=datadbserverdamen.database.windows.net;"         # Naam of IP van de server
+        "DATABASE=staging_elony;"     # Naam van de database
+        "UID=admindamen;"               # Gebruikersnaam
+        "PWD=uiop7890UIOP&*();"               # Wachtwoord
         )
         try:
             self.connection = pyodbc.connect(connection_string)
@@ -29,14 +27,7 @@ class DbConnector:
             print("Fout bij verbinden:", e)
             raise
 
-    @classmethod
-    def get_instance(cls):
-        if cls._instance is None:
-            cls._instance = DbConnector() 
-        return cls._instance
-
-    def close(self):
+    def close(self)-> None:
         if self.connection:
             self.connection.close()
             print("Connection closed.")
-            self.connection = None 
