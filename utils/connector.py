@@ -16,7 +16,7 @@ class DbConnector:
 
     def _connect(self):
         connection_string = (
-            "DRIVER={SQL Server};"  # Driver
+            "DRIVER={ODBC Driver 17 for SQL Server};"  # Driver
             "SERVER=datadbserverdamen.database.windows.net;"  # Server address
             "DATABASE=staging_elony;"  # Database name
             "UID=admindamen;"  # Username
