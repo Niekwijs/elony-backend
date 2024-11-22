@@ -101,13 +101,18 @@ class TweetRepo:
                 cursor.execute("""SELECT TOP 3 * 
                                 FROM dbo.tweet_elon_musk
                                 WHERE created_at >= ?
-                                ORDER BY created_at; """, (date))
+                                AND NOT EXISTS (
+                                    SELECT 1
+                                    FROM dbo.is_saved_tweet
+                                    WHERE dbo.is_saved_tweet.tweet_elon_musk_id = dbo.tweet_elon_musk.id
+                                )
+            	                ORDER BY created_at; """, (date))
 
                 columns = [column[0] for column in cursor.description]
                 rows = cursor.fetchall()
 
                 if len(rows) == 0:
-                    data.append( {"error" : "There are no tweets before or after this date"})
+                    data.append( {"error" : "There are no tweets before or after this date"})   
                     return data
                 
                 for row in rows:
