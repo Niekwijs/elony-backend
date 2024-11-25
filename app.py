@@ -63,6 +63,7 @@ def get_all_tweets():
 
 @app.route('/tweet/save_by_id', methods=['POST'])
 def save_by_id():
+    print('Yes')
     tweet_id = request.args["tweet_id"]
     save_date = request.args["save_date"]
     save_date = datetime.fromisoformat(save_date)
