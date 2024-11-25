@@ -67,7 +67,7 @@ class TweetRepo:
     
     def save_tweet_by_id(self, tweet_id: int, save_date: datetime): # Voeg save_date toe
         res= {}
-
+        
 
         # check if tweet id exists
         if len(self.get_tweet_by_id(tweet_id)) == 0:
@@ -82,8 +82,7 @@ class TweetRepo:
         else:
             try: 
                 with self.con.cursor() as cursor:
-                    cursor.execute("INSERT INTO dbo.is_saved_tweet (tweet_elon_musk_id, save_date) VALUES ((SELECT id FROM dbo.tweet_elon_musk WHERE id = ?));",(tweet_id, save_date)) # save_date toegevoegd
-
+                    cursor.execute("INSERT INTO dbo.is_saved_tweet (tweet_elon_musk_id, save_date) VALUES ((SELECT id FROM dbo.tweet_elon_musk WHERE id = ?), ?);",(tweet_id, save_date)) # save_date toegevoegd
                     self.con.commit() 
                     res["message"] = f"Tweet with id {tweet_id} has been successfully saved."
                     res["success"] = True
