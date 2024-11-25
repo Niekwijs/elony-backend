@@ -2,6 +2,7 @@
 from flask_cors import CORS
 from flask import Flask, jsonify, request, send_file
 from json import loads
+from datetime import datetime
 
 # our files/ imports
 import beursdata_tabel
@@ -63,8 +64,10 @@ def get_all_tweets():
 @app.route('/tweet/save_by_id', methods=['POST'])
 def save_by_id():
     tweet_id = request.args["tweet_id"]
+    save_date = request.args["save_date"]
+    save_date = datetime.fromisoformat(save_date)
 
-    res = tweet_repo.save_tweet_by_id(tweet_id)
+    res = tweet_repo.save_tweet_by_id(tweet_id, save_date)
 
     return jsonify({'res': res})
 
