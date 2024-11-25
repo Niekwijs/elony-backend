@@ -15,15 +15,16 @@ class DbConnector:
         pass 
 
     def _connect(self):
-        connection_string = (
-            "DRIVER={SQL Server};"  # Driver
-            "SERVER=datadbserverdamen.database.windows.net;"  # Server address
-            "DATABASE=staging_elony;"  # Database name
-            "UID=admindamen;"  # Username
-            "PWD=uiop7890UIOP&*();"  # Password (consider using environment variables or secure storage for credentials)
-        )
+
+        server = 'datadbserverdamen.database.windows.net'
+        database = 'staging_elony'
+        username = 'admindamen'
+        password = 'uiop7890UIOP&*()'
+        driver = '{ODBC Driver 17 for SQL Server}'
         try:
-            self.connection = pyodbc.connect(connection_string)
+            self.connection = pyodbc.connect(
+        f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}'
+    )
             print("Verbinding succesvol!")
         except pyodbc.Error as e:
             print("Fout bij verbinden:", e)

@@ -99,3 +99,7 @@ def get_three_after_date():
 def tesla_beursdata_lijngrafiek_matplotlib():
     img_buffer = create_grafiek_matplotlib()
     return send_file(img_buffer, mimetype='image/png')
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
