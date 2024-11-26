@@ -65,9 +65,9 @@ class TweetRepo:
             raise
         return res
     
-    def save_tweet_by_id(self, tweet_id: int): 
+    def save_tweet_by_id(self, tweet_id: int, save_date: datetime): # Voeg save_date toe
         res= {}
-
+        
 
         # check if tweet id exists
         if len(self.get_tweet_by_id(tweet_id)) == 0:
@@ -82,8 +82,7 @@ class TweetRepo:
         else:
             try: 
                 with self.con.cursor() as cursor:
-                    cursor.execute("INSERT INTO dbo.is_saved_tweet (tweet_elon_musk_id) VALUES ((SELECT id FROM dbo.tweet_elon_musk WHERE id = ?));",(tweet_id)) 
-
+                    cursor.execute("INSERT INTO dbo.is_saved_tweet (tweet_elon_musk_id, save_date) VALUES ((SELECT id FROM dbo.tweet_elon_musk WHERE id = ?), ?);",(tweet_id, save_date)) # save_date toegevoegd
                     self.con.commit() 
                     res["message"] = f"Tweet with id {tweet_id} has been successfully saved."
                     res["success"] = True
@@ -98,15 +97,11 @@ class TweetRepo:
 
         try:
             with self.con.cursor() as cursor:
-                cursor.execute("""SELECT TOP 3 * 
-                                FROM dbo.tweet_elon_musk
-                                WHERE created_at >= ?
-                                AND NOT EXISTS (
-                                    SELECT 1
-                                    FROM dbo.is_saved_tweet
-                                    WHERE dbo.is_saved_tweet.tweet_elon_musk_id = dbo.tweet_elon_musk.id
-                                )
-            	                ORDER BY created_at; """, (date))
+                cursor.execute("""  SELECT TOP 3 *
+                                    FROM dbo.tweet_elon_musk
+                                    LEFT JOIN dbo.is_saved_tweet ON dbo.tweet_elon_musk.id = dbo.is_saved_tweet.tweet_elon_musk_id
+                                    WHERE dbo.is_saved_tweet.tweet_elon_musk_id IS NULL AND dbo.tweet_elon_musk.created_at >= ?
+                                    ORDER BY dbo.tweet_elon_musk.created_at;""", (date))
 
                 columns = [column[0] for column in cursor.description]
                 rows = cursor.fetchall()

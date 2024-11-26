@@ -2,6 +2,7 @@
 from flask_cors import CORS
 from flask import Flask, jsonify, request, send_file
 from json import loads
+from datetime import datetime
 
 # our files/ imports
 import beursdata_tabel
@@ -62,9 +63,12 @@ def get_all_tweets():
 
 @app.route('/tweet/save_by_id', methods=['POST'])
 def save_by_id():
+    print('Yes')
     tweet_id = request.args["tweet_id"]
+    save_date = request.args["save_date"]
+    save_date = datetime.fromisoformat(save_date)
 
-    res = tweet_repo.save_tweet_by_id(tweet_id)
+    res = tweet_repo.save_tweet_by_id(tweet_id, save_date)
 
     return jsonify({'res': res})
 
@@ -92,9 +96,11 @@ def get_three_after_date():
     return jsonify({'res': res})
         
 
-
-
 @app.route("/lijngrafiek_beursdata_matplotlib", methods=["GET"])
 def tesla_beursdata_lijngrafiek_matplotlib():
     img_buffer = create_grafiek_matplotlib()
     return send_file(img_buffer, mimetype='image/png')
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
