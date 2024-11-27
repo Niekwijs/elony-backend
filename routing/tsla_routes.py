@@ -1,8 +1,10 @@
 from flask import jsonify, request, send_file, Blueprint
+from datetime import datetime
+
 from repositories.tsla_repo import TslaRepo
 from utils.connector import DbConnector
 from utils.beursdata_lijngrafiek import create_grafiek_matplotlib
-from datetime import datetime
+
 
 db_con: DbConnector = DbConnector()
 tsla_repo: TslaRepo = TslaRepo(db_con)
@@ -13,6 +15,7 @@ tsla_routes = Blueprint('tsla_routes', __name__)
 def tesla_tabel():
     try:
         parsed_beursdata_tesla = tsla_repo.get_beursdata_DBD001()
+        
         return jsonify({"res": parsed_beursdata_tesla}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
