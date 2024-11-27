@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class TslaRepo:
+    
     con: pyodbc.Connection = None
 
     def __init__(self, db_connection : DbConnector):
