@@ -1,6 +1,8 @@
-from flask import jsonify, request 
+from flask import jsonify, request, send_file
 from repositories.tsla_repo import TslaRepo
 from utils.connector import DbConnector
+from utils.beursdata_lijngrafiek import create_grafiek_matplotlib
+
 db_con: DbConnector = DbConnector()
 tsla_repo: TslaRepo = TslaRepo(db_con)
 def init_tsla_routes(app):
@@ -19,3 +21,8 @@ def init_tsla_routes(app):
         end_date = request.args["end_date"]
         res = tsla_repo.get_by_date_range(start_date, end_date)
         return jsonify({"res": res})
+    
+    @app.route("/lijngrafiek_beursdata_matplotlib", methods=["GET"])
+    def tesla_beursdata_lijngrafiek_matplotlib():
+        img_buffer = create_grafiek_matplotlib()
+        return send_file(img_buffer, mimetype='image/png')
