@@ -50,7 +50,6 @@ class TslaRepo:
         end_date = datetime.strptime(end_date, "%Y-%m-%d")
         start_date_offset = start_date.strftime("%Y-%m-%dT%H:%M:%S+00:00")
         end_date_offset = end_date.strftime("%Y-%m-%dT%H:%M:%S+00:00")
-
         try:
             with self.con.cursor() as cursor:
 
@@ -59,16 +58,22 @@ class TslaRepo:
                 rows : List[pyodbc.Row] = cursor.fetchall()
 
                 for row in rows:
-                        date_str = row[0]
-                        tsla_value = row[1]
-
+                    date_str = row[0]
+                    if isinstance(date_str, str):
                         date_obj = datetime.fromisoformat(date_str)
-                        iso_date = date_obj.replace(tzinfo=None).isoformat() + "Z"
+                    elif isinstance(date_str, datetime):
+                        date_obj = date_str
+                    else:
+                        print("Unexpected type for date_str")
+                        continue
+            
+                    tsla_value = row[1]
+                    iso_date = date_obj.replace(tzinfo=None).isoformat() + "Z"
 
-                        data.append({
-                            "Date": iso_date,
-                            "Tsla": tsla_value
-                        })
+                    data.append({
+                        "Date": iso_date,
+                        "Tsla": tsla_value
+                    })
     
         except Exception as e:
             print(f"Get tsla by range went wrong: {e}")
@@ -81,7 +86,7 @@ class TslaRepo:
             with self.con.cursor() as cursor:
 
                 cursor.execute("""  SELECT *
-                                    FROM dbo.tsla_ticker_2015_2020
+                                    FROM dbo.tsla_ticker_2015_2020 
                                     WHERE DATEPART(day, Date_typed) = 1;""")
 
                 rows : List[pyodbc.Row] = cursor.fetchall()
@@ -91,13 +96,12 @@ class TslaRepo:
                         tsla_value = row[1]
                         dt = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S%z")
                         timestamp_ms = int(dt.timestamp() * 1000)
-
                         data.append({
                             "Date": timestamp_ms ,
                             "Tsla": tsla_value
                         })
     
         except Exception as e:
-            print(f"Get tsla by range went wrong: {e}")
+            print(f'gettbeur sdata_DBD001 went wrong {e}')
             raise
         return data

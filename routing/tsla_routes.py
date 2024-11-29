@@ -53,6 +53,6 @@ def get_tsla_by_date_range():
 def tesla_beursdata_lijngrafiek_matplotlib():
     try:
         img_buffer = create_grafiek_matplotlib()
-        return send_file(img_buffer, mimetype='image/png', as_attachment=True, attachment_filename='tsla_graph.png')
+        return send_file(img_buffer, mimetype='image/png', as_attachment=True, download_name ='tsla_graph.png')
     except Exception as e:
         return jsonify({"error": str(e)}), 500
