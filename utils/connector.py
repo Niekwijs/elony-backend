@@ -1,6 +1,8 @@
 import pyodbc
 from typing import Optional
 
+from utils.pyodbc_utils import handle_datetimeoffset
+
 class DbConnector:
 
     _instance = None
@@ -23,8 +25,9 @@ class DbConnector:
         driver = '{ODBC Driver 17 for SQL Server}'
         try:
             self.connection = pyodbc.connect(
-        f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}'
-    )
+            f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}'
+            )
+            self.connection.add_output_converter(-155, handle_datetimeoffset)
             print("Verbinding succesvol!")
         except pyodbc.Error as e:
             print("Fout bij verbinden:", e)

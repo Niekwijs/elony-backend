@@ -82,6 +82,6 @@ def get_three_after_date():
     
     try:
         res = tweet_repo.get_three_after_date(date)
-        return jsonify({"data": res}), 200
+        return jsonify({"res": res}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
