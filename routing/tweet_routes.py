@@ -38,8 +38,6 @@ def save_by_id():
     tweet_id = request.args.get("tweet_id")
     save_date_str = request.args["save_date"]
 
-    res = tweet_repo.save_tweet_by_id(tweet_id, save_date)
-
     if not tweet_id or not save_date_str:
             return jsonify({"error": "tweet_id and save_date are required"}), 400
 
@@ -50,7 +48,7 @@ def save_by_id():
     
     try:
         res = tweet_repo.save_tweet_by_id(tweet_id, save_date)
-        return jsonify({"message": "Tweet saved successfully", "res": res}), 201
+        return jsonify({"res": res}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     

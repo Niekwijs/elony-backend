@@ -57,8 +57,9 @@ class TweetRepo:
                 cursor.execute("Select * FROM dbo.is_saved_tweet WHERE tweet_elon_musk_id = ?;",(tweet_id))
 
                 row: List[pyodbc.Row] = cursor.fetchall()
-
-                res = len(row)> 0
+                print(f'Result select all with id {row}')
+                res = (len(row)> 0)
+                print(f'boolean res {res}')
 
         except Exception as e:
             print(f'Check if tweet is saved went wrong with: {e}')
@@ -80,6 +81,7 @@ class TweetRepo:
             return res
         
         else:
+            print('save gets hit')
             try: 
                 with self.con.cursor() as cursor:
                     cursor.execute("INSERT INTO dbo.is_saved_tweet (tweet_elon_musk_id, save_date) VALUES ((SELECT id FROM dbo.tweet_elon_musk WHERE id = ?), ?);",(tweet_id, save_date)) # save_date toegevoegd
