@@ -10,8 +10,6 @@ from routing.tsla_routes import tsla_routes
 app = Flask(__name__)
 CORS(app)
 
-# db connection
-db_con: DbConnector = DbConnector()
 
 # add different routing
 app.register_blueprint(tweet_routes)
