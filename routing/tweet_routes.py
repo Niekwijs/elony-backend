@@ -62,7 +62,7 @@ def check_if_saved():
     
     try:
         res = tweet_repo.check_if_saved(tweet_id)
-        return jsonify({"data": res}), 200
+        return jsonify({"res": res}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
