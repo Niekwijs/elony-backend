@@ -8,7 +8,16 @@ tweet_routes = Blueprint('tweet_routes', __name__)
 db_con: DbConnector = DbConnector()
 tweet_repo: TweetRepo = TweetRepo(db_con)
 
-
+# Route to fetch a tweet by its ID.
+# This endpoint allows clients to retrieve a specific tweet using its unique identifier (tweet_id).
+# Method: GET
+# Query Parameters:
+#   - tweet_id (required): The unique identifier of the tweet to be retrieved.
+# Responses:
+#   - 200: Returns the tweet details in JSON format if found.
+#   - 400: Returns an error if the tweet_id is not provided.
+#   - 404: Returns a message if no tweet is found with the given tweet_id.
+#   - 500: Returns an error message in case of any server-side exceptions.
 @tweet_routes.route('/tweet/get_by_id', methods=["GET"])
 def get_tweet_by_id():
     tweet_id = request.args.get("tweet_id")
