@@ -28,14 +28,16 @@ jobs:
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
-        
+        run: |
+          pip install -r requirements.txt
+          pip install pytest  # Ensure pytest is explicitly installed
+      
       - name: Run tests
         run: |
           source venv/bin/activate
           pytest
         env:
-          PYTHONPATH: "${{ github.workspace }}"
+          PYTHONPATH: ${{ github.workspace }}
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
