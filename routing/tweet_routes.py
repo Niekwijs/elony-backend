@@ -1,12 +1,13 @@
 from flask import jsonify, request, Blueprint
 from utils.connector import DbConnector
+from repositories.Itweet_repo import ITweetRepo
 from repositories.tweet_repo import TweetRepo
 from datetime import datetime
 
 
 tweet_routes = Blueprint('tweet_routes', __name__)
 db_con: DbConnector = DbConnector()
-tweet_repo: TweetRepo = TweetRepo(db_con)
+tweet_repo: ITweetRepo = TweetRepo(db_con)
 
 # Route to fetch a tweet by its ID.
 # This endpoint allows clients to retrieve a specific tweet using its unique identifier (tweet_id).

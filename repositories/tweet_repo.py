@@ -4,12 +4,13 @@ from typing import List
 from datetime import datetime
 
 from utils.connector import DbConnector
+from repositories.Itweet_repo import ITweetRepo
 
 
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
-class TweetRepo:
+class TweetRepo(ITweetRepo):
     con : pyodbc.Connection = None
 
     def __init__(self, db_connection : DbConnector):

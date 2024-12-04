@@ -1,13 +1,14 @@
 from flask import jsonify, request, send_file, Blueprint
 from datetime import datetime
 
-from repositories.tsla_repo import TslaRepo
+from repositories.tsla_repo import ITslaRepo, TslaRepo
+
 from utils.connector import DbConnector
 from utils.beursdata_lijngrafiek import create_grafiek_matplotlib
 
 
 db_con: DbConnector = DbConnector()
-tsla_repo: TslaRepo = TslaRepo(db_con)
+tsla_repo: ITslaRepo = TslaRepo(db_con)
 
 tsla_routes = Blueprint('tsla_routes', __name__)
 
