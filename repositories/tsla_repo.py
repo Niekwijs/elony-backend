@@ -18,7 +18,7 @@ class TslaRepo:
     def __init__(self, db_connection : DbConnector):
         self.con = db_connection.connection
     
-    def get_all(self)-> List[List]:
+    def get_all_succes(self)-> List[List]:
         data = []
 
         try:
