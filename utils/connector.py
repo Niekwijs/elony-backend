@@ -1,7 +1,7 @@
 import pyodbc
 from typing import Optional
 
-from ..utils.pyodbc_utils import handle_datetimeoffset
+from utils.pyodbc_utils import handle_datetimeoffset
 
 class DbConnector:
 
