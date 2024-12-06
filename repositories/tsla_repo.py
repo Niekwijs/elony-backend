@@ -4,21 +4,21 @@ from typing import List
 from datetime import datetime
 
 from utils.connector import DbConnector
-
+from repositories.Itsla_repo import ITslaRepo
 
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
 
 
-class TslaRepo:
+class TslaRepo(ITslaRepo):
     
     con: pyodbc.Connection = None
 
     def __init__(self, db_connection : DbConnector):
         self.con = db_connection.connection
     
-    def get_all(self)-> List[List]:
+    def get_all_succes(self)-> List[List]:
         data = []
 
         try:

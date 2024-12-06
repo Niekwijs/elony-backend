@@ -1,14 +1,24 @@
 from flask import jsonify, request, Blueprint
 from utils.connector import DbConnector
+from repositories.Itweet_repo import ITweetRepo
 from repositories.tweet_repo import TweetRepo
 from datetime import datetime
 
 
 tweet_routes = Blueprint('tweet_routes', __name__)
 db_con: DbConnector = DbConnector()
-tweet_repo: TweetRepo = TweetRepo(db_con)
+tweet_repo: ITweetRepo = TweetRepo(db_con)
 
-
+# Route to fetch a tweet by its ID.
+# This endpoint allows clients to retrieve a specific tweet using its unique identifier (tweet_id).
+# Method: GET
+# Query Parameters:
+#   - tweet_id (required): The unique identifier of the tweet to be retrieved.
+# Responses:
+#   - 200: Returns the tweet details in JSON format if found.
+#   - 400: Returns an error if the tweet_id is not provided.
+#   - 404: Returns a message if no tweet is found with the given tweet_id.
+#   - 500: Returns an error message in case of any server-side exceptions.
 @tweet_routes.route('/tweet/get_by_id', methods=["GET"])
 def get_tweet_by_id():
     tweet_id = request.args.get("tweet_id")
@@ -62,7 +72,7 @@ def check_if_saved():
     
     try:
         res = tweet_repo.check_if_saved(tweet_id)
-        return jsonify({"data": res}), 200
+        return jsonify({"res": res}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
